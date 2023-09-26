@@ -136,6 +136,11 @@ for (let i = 0; i < hours.length; i++) {
   li.textContent = `${hours[i]}: ${dubai.cookiesPerHour[i]}`;
   dubaiList.appendChild(li);
 }
+
+const dubaiTotal = document.createElement("li");
+dubaiTotal.textContent = `Total: ${dubai.totalCookiesSold}`;
+dubaiList.appendChild(dubaiTotal);
+
 locationSales.appendChild(dubaiList);
 
 const paris = {
@@ -170,6 +175,11 @@ for (let i = 0; i < hours.length; i++) {
   li.textContent = `${hours[i]}: ${paris.cookiesPerHour[i]}`;
   parisList.appendChild(li);
 }
+
+const parisTotal = document.createElement("li");
+parisTotal.textContent = `Total: ${paris.totalCookiesSold}`;
+parisList.appendChild(parisTotal);
+
 locationSales.appendChild(parisList);
 
 const lima = {
@@ -204,4 +214,9 @@ for (let i = 0; i < hours.length; i++) {
   li.textContent = `${hours[i]}: ${lima.cookiesPerHour[i]}`;
   limaList.appendChild(li);
 }
+
+const limaTotal = document.createElement("li");
+limaTotal.textContent = `Total: ${lima.totalCookiesSold}`;
+limaList.appendChild(limaTotal);
+
 locationSales.appendChild(limaList);
