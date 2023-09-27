@@ -15,208 +15,94 @@ const hours = [
   "7pm",
 ];
 
+// Specify the table from the HTML is where we're referring to
+const table = document.getElementById("locationSales");
+
 // Generates random number between parameters
 // Math.floor rounds down to whole number
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const seattle = {
-  location: "Seattle",
-  minCustomers: 23,
-  maxCustomers: 65,
-  avgCookiesPerCustomer: 6.3,
-  customersPerHour: [],
-  cookiesPerHour: [],
-  totalCookiesSold: 0,
-  calculateSales: function () {
-    for (let i = 0; i < hours.length; i++) {
-      const randNum = randomNumber(this.minCustomers, this.maxCustomers);
-      this.customersPerHour.push(randNum);
-      this.cookiesPerHour.push(
-        Math.floor(randNum * this.avgCookiesPerCustomer)
-      );
-      this.totalCookiesSold += this.cookiesPerHour[i]; //Take the total cookies and add it to itself for each loop through
-    }
-  },
+// Constructor that outputs Location objects
+function Location(location, minCustomers, maxCustomers, avgCookiesPerCustomer) {
+  this.location = location;
+  this.minCustomers = minCustomers;
+  this.maxCustomers = maxCustomers;
+  this.avgCookiesPerCustomer = avgCookiesPerCustomer;
+  this.customersPerHour = [];
+  this.cookiesPerHour = [];
+  this.totalCookiesSold = 0;
+} // ^^^Why do those last 3 not require parameters? Is it because they're not information we're inputting to begin with so they don't need to be defined?
+
+// Prototype ensures all Locations will have function, we only need to write it once here
+// Prototype to calculate sales for this location
+Location.prototype.calculateSales = function () {
+  for (let i = 0; i < hours.length; i++) {
+    const randNum = randomNumber(this.minCustomers, this.maxCustomers);
+    this.customersPerHour.push(randNum);
+    this.cookiesPerHour.push(Math.floor(randNum * this.avgCookiesPerCustomer));
+    this.totalCookiesSold += this.cookiesPerHour[i]; //Take the total cookies and add it to itself for each loop through
+  }
 };
 
-seattle.calculateSales();
+// Prototype to render information as table
+Location.prototype.render = function () {
+  this.calculateSales(); // Calculate sales first
+  const tr = document.createElement("tr"); // Create table row
 
-// Specify which HTML element we're dealing with
-const locationSales = document.getElementById("locationSales");
+  const th = document.createElement("th");
+  th.textContent = this.location; //make location th (display bold!)
+  tr.appendChild(th); //add th to tr
 
-// Add title for the location & add to page
-const seattleTitle = document.createElement("h2");
-seattleTitle.textContent = seattle.location;
-locationSales.appendChild(seattleTitle);
+  for (let i = 0; i < this.cookiesPerHour.length; i++) {
+    const td = document.createElement("td");
+    td.textContent = this.cookiesPerHour[i];
+    tr.appendChild(td);
+  }
 
-// Create list to show cookies sold at each hour
-const seattleList = document.createElement("ul");
-for (let i = 0; i < hours.length; i++) {
-  const li = document.createElement("li");
-  li.textContent = `${hours[i]}: ${seattle.cookiesPerHour[i]}`;
-  seattleList.appendChild(li);
-}
+  // Add total to end of row
+  const totalTd = document.createElement("td");
+  totalTd.textContent = this.totalCookiesSold;
+  tr.appendChild(totalTd);
 
-const seattleTotal = document.createElement("li");
-seattleTotal.textContent = `Total: ${seattle.totalCookiesSold}`;
-seattleList.appendChild(seattleTotal);
-
-locationSales.appendChild(seattleList);
-
-const tokyo = {
-  location: "Tokyo",
-  minCustomers: 3,
-  maxCustomers: 24,
-  avgCookiesPerCustomer: 1.2,
-  customersPerHour: [],
-  cookiesPerHour: [],
-  totalCookiesSold: 0,
-  calculateSales: function () {
-    for (let i = 0; i < hours.length; i++) {
-      const randNum = randomNumber(this.minCustomers, this.maxCustomers);
-      this.customersPerHour.push(randNum);
-      this.cookiesPerHour.push(
-        Math.floor(randNum * this.avgCookiesPerCustomer)
-      );
-      this.totalCookiesSold += this.cookiesPerHour[i];
-    }
-  },
+  // Add full row to table
+  table.appendChild(tr);
 };
 
-tokyo.calculateSales();
+// Create Location objects
+const seattle = new Location("Seattle", 23, 65, 6.3);
+const tokyo = new Location("Tokyo", 3, 24, 1.2);
+const dubai = new Location("Dubai", 11, 38, 3.7);
+const paris = new Location("Paris", 20, 38, 2.3);
+const lima = new Location("Lima", 2, 16, 4.6);
 
-const tokyoTitle = document.createElement("h2");
-tokyoTitle.textContent = tokyo.location;
-locationSales.appendChild(tokyoTitle);
+// Render header row
+// Create blank cell
+const headerRow = document.createElement("tr");
+const blankTd = document.createElement("td");
+headerRow.appendChild(blankTd);
 
-const tokyoList = document.createElement("ul");
+// Add each time to the header row
 for (let i = 0; i < hours.length; i++) {
-  const li = document.createElement("li");
-  li.textContent = `${hours[i]}: ${tokyo.cookiesPerHour[i]}`;
-  tokyoList.appendChild(li);
+  const th = document.createElement("th");
+  th.textContent = hours[i];
+  headerRow.appendChild(th);
 }
 
-const tokyoTotal = document.createElement("li");
-tokyoTotal.textContent = `Total: ${tokyo.totalCookiesSold}`;
-tokyoList.appendChild(tokyoTotal);
+// Add a total head
+const totalHeading = document.createElement("th");
+totalHeading.textContent = "Total";
+headerRow.appendChild(totalHeading);
 
-locationSales.appendChild(tokyoList);
+// Add header row to table
+table.appendChild(headerRow);
 
-const dubai = {
-  location: "Dubai",
-  minCustomers: 11,
-  maxCustomers: 38,
-  avgCookiesPerCustomer: 3.7,
-  customersPerHour: [],
-  cookiesPerHour: [],
-  totalCookiesSold: 0,
-  calculateSales: function () {
-    for (let i = 0; i < hours.length; i++) {
-      const randNum = randomNumber(this.minCustomers, this.maxCustomers);
-      this.customersPerHour.push(randNum);
-      this.cookiesPerHour.push(
-        Math.floor(randNum * this.avgCookiesPerCustomer)
-      );
-      this.totalCookiesSold += this.cookiesPerHour[i];
-    }
-  },
-};
+// TO DO TOTAL ROW AT THE BOTTOM, LOOP WITHIN LOOP AND CITIES WITHIN ARRAY
 
-dubai.calculateSales();
-
-const dubaiTitle = document.createElement("h2");
-dubaiTitle.textContent = dubai.location;
-locationSales.appendChild(dubaiTitle);
-
-const dubaiList = document.createElement("ul");
-for (let i = 0; i < hours.length; i++) {
-  const li = document.createElement("li");
-  li.textContent = `${hours[i]}: ${dubai.cookiesPerHour[i]}`;
-  dubaiList.appendChild(li);
-}
-
-const dubaiTotal = document.createElement("li");
-dubaiTotal.textContent = `Total: ${dubai.totalCookiesSold}`;
-dubaiList.appendChild(dubaiTotal);
-
-locationSales.appendChild(dubaiList);
-
-const paris = {
-  location: "Paris",
-  minCustomers: 20,
-  maxCustomers: 38,
-  avgCookiesPerCustomer: 2.3,
-  customersPerHour: [],
-  cookiesPerHour: [],
-  totalCookiesSold: 0,
-  calculateSales: function () {
-    for (let i = 0; i < hours.length; i++) {
-      const randNum = randomNumber(this.minCustomers, this.maxCustomers);
-      this.customersPerHour.push(randNum);
-      this.cookiesPerHour.push(
-        Math.floor(randNum * this.avgCookiesPerCustomer)
-      );
-      this.totalCookiesSold += this.cookiesPerHour[i];
-    }
-  },
-};
-
-paris.calculateSales();
-
-const parisTitle = document.createElement("h2");
-parisTitle.textContent = paris.location;
-locationSales.appendChild(parisTitle);
-
-const parisList = document.createElement("ul");
-for (let i = 0; i < hours.length; i++) {
-  const li = document.createElement("li");
-  li.textContent = `${hours[i]}: ${paris.cookiesPerHour[i]}`;
-  parisList.appendChild(li);
-}
-
-const parisTotal = document.createElement("li");
-parisTotal.textContent = `Total: ${paris.totalCookiesSold}`;
-parisList.appendChild(parisTotal);
-
-locationSales.appendChild(parisList);
-
-const lima = {
-  location: "Lima",
-  minCustomers: 2,
-  maxCustomers: 16,
-  avgCookiesPerCustomer: 4.6,
-  customersPerHour: [],
-  cookiesPerHour: [],
-  totalCookiesSold: 0,
-  calculateSales: function () {
-    for (let i = 0; i < hours.length; i++) {
-      const randNum = randomNumber(this.minCustomers, this.maxCustomers);
-      this.customersPerHour.push(randNum);
-      this.cookiesPerHour.push(
-        Math.floor(randNum * this.avgCookiesPerCustomer)
-      );
-      this.totalCookiesSold += this.cookiesPerHour[i];
-    }
-  },
-};
-
-lima.calculateSales();
-
-const limaTitle = document.createElement("h2");
-limaTitle.textContent = lima.location;
-locationSales.appendChild(limaTitle);
-
-const limaList = document.createElement("ul");
-for (let i = 0; i < hours.length; i++) {
-  const li = document.createElement("li");
-  li.textContent = `${hours[i]}: ${lima.cookiesPerHour[i]}`;
-  limaList.appendChild(li);
-}
-
-const limaTotal = document.createElement("li");
-limaTotal.textContent = `Total: ${lima.totalCookiesSold}`;
-limaList.appendChild(limaTotal);
-
-locationSales.appendChild(limaList);
+// Render each store to page (includes calculating sales because we put it into the render prototype)
+seattle.render();
+tokyo.render();
+dubai.render();
+paris.render();
+lima.render();
