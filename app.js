@@ -33,7 +33,7 @@ function Location(location, minCustomers, maxCustomers, avgCookiesPerCustomer) {
   this.customersPerHour = [];
   this.cookiesPerHour = [];
   this.totalCookiesSold = 0;
-} // ^^^Why do those last 3 not require parameters? Is it because they're not information we're inputting to begin with so they don't need to be defined?
+}
 
 // Prototype ensures all Locations will have function, we only need to write it once here
 // Prototype to calculate sales for this location
@@ -98,11 +98,40 @@ headerRow.appendChild(totalHeading);
 // Add header row to table
 table.appendChild(headerRow);
 
-// TO DO TOTAL ROW AT THE BOTTOM, LOOP WITHIN LOOP AND CITIES WITHIN ARRAY
-
 // Render each store to page (includes calculating sales because we put it into the render prototype)
 seattle.render();
 tokyo.render();
 dubai.render();
 paris.render();
 lima.render();
+
+// TAKE FORM INPUT AND ADD IT TO THE BOTTOM OF THE TABLE
+// Grab the form
+const form = document.querySelector("form");
+
+// Add event listener
+form.addEventListener("submit", function (event) {
+  // Parse in event object to function
+  event.preventDefault(); // Prevent default behaviour of submit (refresh, add info to url)
+
+  // Collect info from event object to get user input
+  const newLocation = event.target.location.value;
+  const newMin = event.target.minCustomers.value;
+  const newMax = event.target.maxCustomers.value;
+  const newAvg = event.target.avgCookiesPerCustomer.value;
+
+  // Pump input into Location constructor
+  const formLocation = new Location(newLocation, newMin, newMax, newAvg);
+
+  // Use render prototype (which includes calculateSales prototype) to add row to table
+  formLocation.render();
+});
+
+// ADD TOTAL TO THE BOTTOM
+// Tim has suggested a loop within a loop and putting the cities in an array to generate the initial row
+// The brief suggests document.querySelectorAll() to update it with each new location added
+// I have no idea but I'm gonna give it a go
+
+// Create a function that grabs each column (except the first column and every first column cell) and totals it
+// Then adds all those totals together to create a final total
+// Then render all of that in a final line
