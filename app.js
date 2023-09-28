@@ -132,6 +132,6 @@ form.addEventListener("submit", function (event) {
 // The brief suggests document.querySelectorAll() to update it with each new location added
 // I have no idea but I'm gonna give it a go
 
-// Create a function that grabs each column (except the first column and every first column cell) and totals it
-// Then adds all those totals together to create a final total
+// Create a standalone function that grabs each column (except the first column and every first column cell) and totals it
 // Then render all of that in a final line
+// I've tried this about four different ways and they haven't work - the syntax and order is definitely the tricky part

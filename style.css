@@ -18,7 +18,10 @@ td {
 
 form {
   display: table;
+  border: 4px dotted black;
+  background-color: azure;
 }
+
 p {
   display: table-row;
 }
