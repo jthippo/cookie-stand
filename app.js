@@ -106,7 +106,7 @@ paris.render();
 lima.render();
 
 // TAKE FORM INPUT AND ADD IT TO THE BOTTOM OF THE TABLE
-// Grab the form
+// Grab the form from DOM node
 const form = document.querySelector("form");
 
 // Add event listener
@@ -128,10 +128,54 @@ form.addEventListener("submit", function (event) {
 });
 
 // ADD TOTAL TO THE BOTTOM
-// Tim has suggested a loop within a loop and putting the cities in an array to generate the initial row
+// Tim has suggested a loop within a loop and putting the locations in an array to generate the initial row
 // The brief suggests document.querySelectorAll() to update it with each new location added
 // I have no idea but I'm gonna give it a go
 
 // Create a standalone function that grabs each column (except the first column and every first column cell) and totals it
 // Then render all of that in a final line
 // I've tried this about four different ways and they haven't work - the syntax and order is definitely the tricky part
+
+// TIM'S TOTAL ROW SOLUTION
+// 1. Put all locations into an array:
+//
+// const = [locationsArray]
+//
+// 2. Remove all individual store render functions
+// 3. Do a for loop:
+//
+// for (let i = p; i < locationsArray; i++) {
+//   locationsArray[i].render();
+// }
+//
+// 4. Create the TOTAL row:
+//
+// function renderTotalRow() {
+//  const tr = document.createElement("tr");
+//  const totalTh = document.createElement("th")
+//  totalTh.textContent = "Hourly Total";
+//
+// Loop round locationsArray and get only that hour's data:
+//
+//  for (let i = 0; i < hours.length; i++) {
+//    let hourlyTotal = 0;
+//    for (let k = 0; k < locationsArray.length; k++); {
+//    hourlyTotal = hourlyTotal + locationsArray[k].cookiesPerHour[i]
+// }
+//
+// 5. Add the hourly total td to the row:
+//
+//  const td = document.createElement("td")
+//  td.textContent = hourlyTotal;
+//  tr.appendChild(td);
+//
+// 6. Add the row to the table:
+//
+//   table.appendChild(tr)
+//  }
+// 7. Render it!
+//
+//  renderTotalRow();
+//
+//
+//
